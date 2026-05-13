@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Productividad MeliAir — Linehaul</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --yellow:#FFE600;--yellow-dark:#E6CF00;--yellow-light:#FFFBE6;
+  --blue:#3483FA;--blue-dark:#2968C8;--blue-deeper:#1A4F9E;
+  --blue-light:#EBF3FF;--blue-mid:#D4E8FF;
+  --dark:#1A1A2E;--text:#333;--gray:#717171;
+  --gray-light:#F5F5F5;--border:#EBEBEB;--white:#fff;
+  --green:#00A650;--green-light:#E8F8EF;
+  --orange:#FF7733;--orange-light:#FFF0E8;
+  --purple:#9B59B6;--purple-light:#F5EEF8;
+}
+body{font-family:'Inter',sans-serif;background:#F2F2F2;color:var(--text);min-height:100vh}
+header{background:var(--yellow);height:60px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:2px solid var(--yellow-dark)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:20px;height:20px}
+.logo-name{font-family:'Raleway',sans-serif;font-weight:800;font-size:17px;color:var(--blue-deeper)}
+.logo-sub{font-size:10px;font-weight:600;color:var(--blue-dark);letter-spacing:1px;text-transform:uppercase;margin-top:1px}
+.header-right{display:flex;align-items:center;gap:8px}
+.btn-back,.lang-link{font-size:12px;font-weight:600;color:var(--blue-deeper);text-decoration:none;background:rgba(255,255,255,0.7);padding:4px 12px;border-radius:20px;border:1px solid var(--yellow-dark);transition:background .15s}
+.btn-back:hover,.lang-link:hover{background:white}
+.badge{background:var(--blue);color:var(--yellow);font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px}
+.hero{background:var(--yellow);padding:2.5rem 2rem 2rem;text-align:center;border-bottom:2px solid var(--yellow-dark)}
+.hero-tag{display:inline-block;background:var(--blue);color:var(--yellow);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+.hero-title-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.hero-ml-icon{width:46px;height:46px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hero-ml-icon svg{width:26px;height:26px}
+.hero h1{font-family:'Raleway',sans-serif;font-size:clamp(20px,3vw,34px);font-weight:800;color:var(--blue-deeper);letter-spacing:-0.8px;line-height:1.2}
+.hero p{font-size:14px;color:var(--blue-dark);opacity:.8;max-width:600px;margin:8px auto 0;line-height:1.6}
+.container{max-width:1180px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.layout{display:grid;grid-template-columns:1fr 440px;gap:20px;align-items:start}
+@media(max-width:960px){.layout{grid-template-columns:1fr}}
+.card{background:var(--white);border-radius:12px;border:1px solid var(--border)}
+.card+.card{margin-top:16px}
+.card-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.card-icon{width:32px;height:32px;background:var(--yellow-light);border:1px solid var(--yellow-dark);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.card-header h2{font-family:'Raleway',sans-serif;font-size:14px;font-weight:700;color:var(--dark)}
+.card-header p{font-size:11px;color:var(--gray);margin-top:1px}
+.card-body{padding:1.25rem}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;margin-top:4px}
+.divider{border:none;border-top:1px solid var(--border);margin:.9rem 0}
+.field{margin-bottom:.9rem}
+.field:last-child{margin-bottom:0}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+label{display:block;font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px}
+label .hint{font-weight:400;color:var(--gray)}
+.field-note{font-size:11px;color:var(--gray);margin-top:4px;background:var(--gray-light);border-radius:6px;padding:5px 8px;border-left:3px solid var(--blue-mid);line-height:1.4}
+input[type="number"]{width:100%;height:38px;border:1.5px solid var(--border);border-radius:8px;padding:0 10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);outline:none;transition:border-color .15s}
+input[type="number"]:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(52,131,250,.1)}
+.results-sticky{position:sticky;top:76px}
+.result-header{background:var(--blue);padding:1.25rem 1.5rem;border-radius:12px 12px 0 0}
+.result-header .r-label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:4px}
+.result-header .r-title{font-family:'Raleway',sans-serif;font-size:15px;font-weight:700;color:var(--yellow)}
+.res-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:.9rem 1.25rem;border-bottom:1px solid var(--border)}
+.kpi{background:var(--gray-light);border-radius:8px;padding:9px 10px;text-align:center}
+.kpi.hl{background:var(--blue)}
+.kpi-val{font-family:'Raleway',sans-serif;font-size:22px;font-weight:800;color:var(--blue);line-height:1}
+.kpi.hl .kpi-val{color:var(--yellow)}
+.kpi-lbl{font-size:9px;color:var(--gray);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.kpi.hl .kpi-lbl{color:rgba(255,255,255,.65)}
+.res-table-wrap{padding:.75rem 1.25rem;overflow-x:auto}
+.res-table{width:100%;border-collapse:collapse;font-size:11px}
+.res-table th{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray);padding:5px 6px;border-bottom:2px solid var(--border);text-align:right;white-space:nowrap}
+.res-table th:first-child{text-align:left}
+.res-table td{padding:6px 6px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text)}
+.res-table td:first-child{font-weight:600;color:var(--dark);font-size:11px}
+.res-table td:not(:first-child){text-align:right;font-family:'Raleway',sans-serif;font-size:12px;font-weight:700}
+.res-table tr:last-child td{border-bottom:none}
+.res-table tr.group-hdr td{background:var(--gray-light);font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--blue);padding:5px 6px;font-family:'Inter',sans-serif}
+.res-table tr:hover td{background:var(--blue-light)}
+.res-table tr.group-hdr:hover td{background:var(--gray-light)}
+.tag-fixed{display:inline-block;font-size:8px;font-weight:700;letter-spacing:.5px;padding:1px 5px;border-radius:4px;text-transform:uppercase;background:var(--green-light);color:var(--green);border:1px solid var(--green);margin-left:3px}
+.tag-var{background:var(--blue-light);color:var(--blue);border-color:var(--blue-mid)}
+.tag-bottleneck{background:#FFF3CD;color:#856404;border:1px solid #FFDA6A;display:inline-block;font-size:8px;font-weight:700;padding:1px 5px;border-radius:4px;margin-left:3px}
+.tag-info{background:var(--purple-light);color:var(--purple);border:1px solid #C39BD3;display:inline-block;font-size:8px;font-weight:700;padding:1px 5px;border-radius:4px;margin-left:3px}
+.empty-state{padding:2.5rem 1.5rem;text-align:center;color:var(--gray)}
+.empty-icon{font-size:32px;margin-bottom:10px}
+.empty-state p{font-size:13px;line-height:1.6}
+.premissas-wrap{margin-top:16px}
+.premissas-btn{width:100%;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:13px;font-weight:500;color:var(--text);font-family:'Inter',sans-serif;transition:background .15s}
+.premissas-btn:hover{background:var(--gray-light)}
+.premissas-body{display:none;background:var(--white);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:1rem 1.25rem;gap:8px}
+.premissas-body.open{display:grid;grid-template-columns:1fr 1fr}
+.prem-item{background:var(--gray-light);border-radius:6px;padding:8px 10px}
+.prem-key{font-size:10px;color:var(--gray);margin-bottom:2px}
+.prem-val{font-size:13px;font-weight:600;color:var(--dark)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.animate{animation:fadeUp .22s ease forwards}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6.5" r="3.5" fill="#FFE600"/><path d="M2.5 17.5c0-4.142 3.358-7.5 7.5-7.5s7.5 3.358 7.5 7.5" stroke="#FFE600" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </div>
+    <div><div class="logo-name">Mercado Libre</div><div class="logo-sub">Herramientas Internas</div></div>
+  </a>
+  <div class="header-right">
+    <a class="btn-back" href="https://mtmtransportes-paginainiciales.vercel.app/">← Página inicial</a>
+    <a class="lang-link" href="calculadora_prod_linehaul_pt.html">🇧🇷 Português</a>
+    <span class="badge">MTM — Productividad MeliAir · Linehaul</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-tag">Productividad Operacional · MeliAir</div>
+  <div class="hero-title-wrap">
+    <div class="hero-ml-icon">
+      <svg viewBox="0 0 26 26" fill="none"><path d="M3 13 L23 13" stroke="#FFE600" stroke-width="2" stroke-linecap="round"/><path d="M14 6 L23 13 L14 20" stroke="#FFE600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 9 L11 13 L8 17" stroke="#FFE600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h1>Calculadora de Productividad MeliAir — Linehaul</h1>
+  </div>
+  <p>Complete los datos operacionales. La calculadora muestra la productividad MTM esperada (pcts/h por puesto) para cada subproceso de descarga de camión, traslado AE, armado de láminas y rep en armado.</p>
+</div>
+
+<div class="container">
+<div class="layout">
+
+<!-- COLUMNA IZQUIERDA: INPUTS -->
+<div>
+
+<!-- DATOS DE OPERACIÓN -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon">📋</div>
+    <div><h2>Datos de Operación</h2><p>Parámetros del ciclo Linehaul (MLM) — carga de avión desde camión</p></div>
+  </div>
+  <div class="card-body">
+
+    <div class="sec-label">Volumen y Capacidades</div>
+    <div class="field-row">
+      <div class="field">
+        <label>Paquetes por camión <span class="hint">(pcts)</span></label>
+        <input type="number" id="pctsPorCamion" value="3000" min="100" oninput="calcular()">
+      </div>
+      <div class="field">
+        <label>SPP Carrito <span class="hint">(pcts/carrito)</span></label>
+        <input type="number" id="sppCarrito" value="600" min="10" oninput="calcular()">
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="sec-label">SPP — Unidades de Carga</div>
+    <div class="field-row">
+      <div class="field">
+        <label>SPP Manga Air <span class="hint">(pcts/manga)</span></label>
+        <input type="number" id="sppMangaAir" value="258" min="1" oninput="calcular()">
+      </div>
+      <div class="field">
+        <label>SPP Gaylord <span class="hint">(pcts/gaylord)</span></label>
+        <input type="number" id="sppGaylord" value="190" min="1" oninput="calcular()">
+        <div class="field-note">MLM: ref. 190 pcts/gaylord.</div>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>SPP Granel Manga <span class="hint">(pcts/lám)</span></label>
+        <input type="number" id="sppGranelManga" value="200" min="1" oninput="calcular()">
+        <div class="field-note">Total de pcts por lámina de manga granel. Afecta: <strong>Rep lámina Manga</strong>.</div>
+      </div>
+      <div class="field">
+        <label>SPP Granel Gaylord <span class="hint">(pcts/lám)</span></label>
+        <input type="number" id="sppGranelGaylord" value="380" min="1" oninput="calcular()">
+        <div class="field-note">Total de pcts por lámina de gaylord granel. Afecta: <strong>Rep lámina Gaylord</strong> y <strong>Rep Escalera</strong>.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="sec-label">Distancias Operacionales</div>
+    <div class="field-row">
+      <div class="field">
+        <label>Dist. docas → staging/buffer <span class="hint">(m)</span></label>
+        <input type="number" id="distDescarga" value="30" min="1" oninput="calcular()">
+        <div class="field-note">Afecta: <strong>Descarga camión AE</strong>. Ref. MTM: 30 m.</div>
+      </div>
+      <div class="field">
+        <label>Dist. staging → posición lámina <span class="hint">(m)</span></label>
+        <input type="number" id="distAE" value="30" min="1" oninput="calcular()">
+        <div class="field-note">Afecta: <strong>Traslado Manga/Gaylord AE</strong>. Ref. MTM: 30 m.</div>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Dist. traslado Gaylord G <span class="hint">(m)</span></label>
+        <input type="number" id="distGF" value="35" min="1" oninput="calcular()">
+        <div class="field-note">Afecta: <strong>Gaylord G forklift</strong>. Ref. MTM: 35 m.</div>
+      </div>
+      <div class="field">
+        <label>Dist. traslado rebocador <span class="hint">(m)</span></label>
+        <input type="number" id="distRebo" value="30" min="1" oninput="calcular()">
+        <div class="field-note">Afecta: <strong>Gaylord rebocador</strong> (referencial). Ref. MTM: 30 m.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TABLA DE REFERENCIA MTM -->
+<div class="premissas-wrap">
+  <button class="premissas-btn" onclick="toggleRef()">
+    📋 Capacidades MTM de referencia (valores a distancias estándar)
+    <span id="refArrow">▼</span>
+  </button>
+  <div class="premissas-body" id="refBody">
+    <div class="prem-item"><div class="prem-key">Descarga camión AE @30m</div><div class="prem-val">1,52 camiones/h</div></div>
+    <div class="prem-item"><div class="prem-key">Manga AE @30m</div><div class="prem-val">11,0 lám/h</div></div>
+    <div class="prem-item"><div class="prem-key">Gaylord AE @30m</div><div class="prem-val">11,0 lám/h</div></div>
+    <div class="prem-item"><div class="prem-key">Gaylord G forklift @35m</div><div class="prem-val">6,67 lám/h</div></div>
+    <div class="prem-item"><div class="prem-key">Gaylord rebocador @30m</div><div class="prem-val">35,4 lám/h</div></div>
+    <div class="prem-item"><div class="prem-key">Armado carrito</div><div class="prem-val">390 pcts/hh</div></div>
+    <div class="prem-item"><div class="prem-key">Set up láminas</div><div class="prem-val">19,78 lám/h</div></div>
+    <div class="prem-item"><div class="prem-key">Rep sobre lámina (Manga)</div><div class="prem-val">2,66 lám/h</div></div>
+    <div class="prem-item"><div class="prem-key">Rep bajo lámina (Manga)</div><div class="prem-val">1,98 lám/h</div></div>
+    <div class="prem-item"><div class="prem-key">Rep sobre lámina (Gaylord)</div><div class="prem-val">1,40 lám/h</div></div>
+    <div class="prem-item"><div class="prem-key">Rep bajo lámina (Gaylord)</div><div class="prem-val">1,13 lám/h</div></div>
+    <div class="prem-item"><div class="prem-key">Rep Granel (bajo)</div><div class="prem-val">532 pcts/hh</div></div>
+    <div class="prem-item"><div class="prem-key">Rep Granel (sobre)</div><div class="prem-val">429 pcts/hh</div></div>
+    <div class="prem-item"><div class="prem-key">Rep Escalera MLM (Gaylord)</div><div class="prem-val">1,09 lám/h</div></div>
+  </div>
+</div>
+
+</div><!-- fin columna izquierda -->
+
+<!-- COLUMNA DERECHA: RESULTADOS -->
+<div class="results-sticky">
+  <div class="card">
+    <div class="result-header">
+      <div class="r-label">Productividad por Subproceso</div>
+      <div class="r-title">MeliAir — Linehaul</div>
+    </div>
+
+    <div class="res-kpis" id="kpiSection">
+      <div class="kpi hl">
+        <div class="kpi-val" id="kpiDesc">—</div>
+        <div class="kpi-lbl">Camiones/h (descarga)</div>
+      </div>
+      <div class="kpi hl">
+        <div class="kpi-val" id="kpiMangaAE">—</div>
+        <div class="kpi-lbl">Lám/h Manga AE</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" id="kpiRepBG">—</div>
+        <div class="kpi-lbl">Pcts/h Rep bajo Gaylord</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" id="kpiCarrito">—</div>
+        <div class="kpi-lbl">Pcts/hh Armado carrito</div>
+      </div>
+    </div>
+
+    <div class="res-table-wrap">
+      <div id="tableContainer">
+        <div class="empty-state">
+          <div class="empty-icon">📊</div>
+          <p>Complete los datos operacionales para ver la productividad de cada subproceso.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEYENDA -->
+  <div style="margin-top:10px;background:white;border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:11px;color:var(--gray);line-height:1.7">
+    <strong style="color:var(--dark)">Leyenda:</strong><br>
+    <span class="tag-fixed">MTM FIJO</span> Capacidad constante — no depende de distancias.<br>
+    <span class="tag-fixed tag-var">VARIABLE</span> Recalculado según distancias ingresadas.<br>
+    <span class="tag-info">INFO</span> Referencial — capacidad de transporte/traslado.<br>
+    <span class="tag-bottleneck">CUELLO</span> Subproceso limitante del grupo.
+  </div>
+</div>
+
+</div><!-- fin layout -->
+</div><!-- fin container -->
+
+<script>
+// ── MTM CONSTANTES (seg/m) ──────────────────────────────────────────
+var SFISM = 0.540;  // forklift, estable, interno, mediano
+var SFILM = 0.612;  // forklift, inestable/cargado, interno, mediano
+var HFFB  = 1.260;  // paletera >500kg (cargada), avance
+var HFFL  = 0.900;  // paletera vacía, avance
+var EFIM  = 0.468;  // rebocador con remolque, interno
+
+// ── CONSTANTES FIJAS PRE-CALCULADAS DEL MTM ─────────────────────────
+
+// Descarga camión AE (paletera, ciclo completo con maniobras)
+// total = FIXED_DESC + D × RATE_DESC
+var FIXED_DESC  = 2348.70;                         // seg (parte fija del ciclo)
+var RATE_DESC   = (HFFB + HFFL) * 0.333 * 7/6;   // ≈ 0.8395 seg/m
+
+// Traslado Manga Air → lámina, AE (4 unidades por viaje)
+// total = FIXED_MANGA + D × RATE_MANGA
+var FIXED_MANGA = 189.00;
+var RATE_MANGA  = 4 * (SFISM + SFILM);  // 4 × 1.152 = 4.608 seg/m
+
+// Traslado Gaylord → lámina, AE idéntico a Manga (misma máquina, 4 unidades)
+// FIXED_MANGA, RATE_MANGA se reutilizan
+
+// Gaylord G (forklift manual, 4 gaylords/viaje)
+// total = FIXED_GF + D × RATE_GF
+var FIXED_GF    = 272.52;
+var RATE_GF     = 7.632;  // 4 × (HFFL + velocidad_cargado_GF) precalculado
+
+// Gaylord rebocador (informacional — capacidad de transporte)
+// total = FIXED_REBO + D × RATE_REBO
+var FIXED_REBO  = 73.61;
+var RATE_REBO   = 2 * EFIM;  // 0.936 seg/m
+
+// Armado carrito (FIJO, 2 personas por carrito)
+var CAP_ARM_CARR_LAM = 1.30;  // lám/h de la operación conjunta
+// pcts/hh por persona = (CAP_ARM_CARR_LAM × sppCarrito) / 2
+
+// Set up láminas (FIJO)
+var CAP_SETUP   = 19.78;  // lám/h
+
+// Rep en armado de láminas (FIJO, lám/h)
+var CAP_REP_SM  = 2.66;   // Rep sobre lámina — Manga
+var CAP_REP_BM  = 1.98;   // Rep bajo lámina  — Manga
+var CAP_REP_SG  = 1.40;   // Rep sobre lámina — Gaylord
+var CAP_REP_BG  = 1.13;   // Rep bajo lámina  — Gaylord
+var CAP_REP_GRAN_BAJO  = 532;  // pcts/hh — Rep Granel (bajo)
+var CAP_REP_GRAN_SOBRE = 429;  // pcts/hh — Rep Granel (sobre)
+var CAP_REP_ESC = 1.09;   // Rep Escalera MLM — Gaylord (lám/h)
+
+// ── HELPERS ──────────────────────────────────────────────────────────
+function n(id){ return parseFloat(document.getElementById(id).value)||0; }
+function fmt(v){ if(v==null||isNaN(v)||v<=0) return '—'; return Math.round(v).toLocaleString('es-AR'); }
+function fmt2(v){ if(v==null||isNaN(v)||v<=0) return '—'; return v.toFixed(2); }
+
+function calcular(){
+  var ppcam = n('pctsPorCamion');
+  var sppC  = n('sppCarrito');
+  var sppMA = n('sppMangaAir');
+  var sppGY = n('sppGaylord');
+  var sppGM = n('sppGranelManga');
+  var sppGG = n('sppGranelGaylord');
+  var D1    = n('distDescarga');
+  var D2    = n('distAE');
+  var D3    = n('distGF');
+  var D4    = n('distRebo');
+
+  if(!ppcam || !sppMA || !sppGY || !sppC) return;
+
+  // ── Cálculos ─────────────────────────────────────────────────────
+
+  // 1. Descarga camión AE
+  var camHora     = 3600 / (FIXED_DESC + D1 * RATE_DESC);
+  var phDescCam   = camHora * ppcam;
+
+  // 2. Traslado Manga AE → lámina (4 mangas/viaje)
+  var lamMangaAE  = 3600 / (FIXED_MANGA + D2 * RATE_MANGA);
+  var phMangaAE   = lamMangaAE * sppMA * 4;
+
+  // 3. Traslado Gaylord AE → lámina (4 gaylords/viaje, misma fórmula)
+  var lamGaylAE   = 3600 / (FIXED_MANGA + D2 * RATE_MANGA);
+  var phGaylAE    = lamGaylAE * sppGY * 4;
+
+  // 4. Gaylord G forklift
+  var lamGF       = 3600 / (FIXED_GF + D3 * RATE_GF);
+  var phGF        = lamGF * sppGY * 4;
+
+  // 5. Gaylord rebocador (capacidad de traslado — informacional)
+  var lamRebo     = 3600 / (FIXED_REBO + D4 * RATE_REBO);
+
+  // 6. Armado carrito
+  var phArmCarrito = (CAP_ARM_CARR_LAM * sppC) / 2;
+
+  // 7. Set up láminas
+  // CAP_SETUP (fijo)
+
+  // 8. Rep en armado — Manga
+  var phRepSM = CAP_REP_SM * sppGM;
+  var phRepBM = CAP_REP_BM * sppGM;
+
+  // 9. Rep en armado — Gaylord
+  var phRepSG = CAP_REP_SG * sppGG;
+  var phRepBG = CAP_REP_BG * sppGG;
+
+  // 10. Rep Granel (fijos)
+  // CAP_REP_GRAN_BAJO, CAP_REP_GRAN_SOBRE
+
+  // 11. Rep Escalera MLM
+  var phRepEsc = CAP_REP_ESC * sppGG;
+
+  // ── KPIs ─────────────────────────────────────────────────────────
+  document.getElementById('kpiDesc').textContent    = fmt2(camHora);
+  document.getElementById('kpiMangaAE').textContent = fmt2(lamMangaAE);
+  document.getElementById('kpiRepBG').textContent   = fmt(phRepBG);
+  document.getElementById('kpiCarrito').textContent = fmt(phArmCarrito);
+
+  // ── Tabla ────────────────────────────────────────────────────────
+  var grupos = [
+    {
+      grp: '✈️  Descarga de Camión',
+      rows:[
+        {nome:'Descarga camión AE', tipo:'var',
+         cap: fmt2(camHora)+' camiones/h',
+         ph: phDescCam, bottleneck:true}
+      ]
+    },
+    {
+      grp: '🤖  Traslado a Lámina — AE',
+      rows:[
+        {nome:'Manga Air AE (4 unid/viaje)', tipo:'var',
+         cap: fmt2(lamMangaAE)+' lám/h',
+         ph: phMangaAE},
+        {nome:'Gaylord AE (4 unid/viaje)',   tipo:'var',
+         cap: fmt2(lamGaylAE)+' lám/h',
+         ph: phGaylAE}
+      ]
+    },
+    {
+      grp: '🏭  Traslado Gaylord',
+      rows:[
+        {nome:'Gaylord G forklift (4 unid/viaje)', tipo:'var',
+         cap: fmt2(lamGF)+' lám/h',
+         ph: phGF},
+        {nome:'Gaylord rebocador', tipo:'var',
+         cap: fmt2(lamRebo)+' lám/h',
+         ph: null, info:true}
+      ]
+    },
+    {
+      grp: '📦  Armado de Carrito',
+      rows:[
+        {nome:'Armado carrito (2 personas)', tipo:'fijo',
+         cap: fmt2(CAP_ARM_CARR_LAM)+' lám/h · ciclo',
+         ph: phArmCarrito}
+      ]
+    },
+    {
+      grp: '⚙️  Set up Láminas',
+      rows:[
+        {nome:'Set up láminas', tipo:'fijo',
+         cap: '19,78 lám/h',
+         ph: null}
+      ]
+    },
+    {
+      grp: '🔧  Armado Láminas — Rep en Armado',
+      rows:[
+        {nome:'Rep sobre lámina — Manga',    tipo:'fijo', cap:'2,66 lám/h',  ph:phRepSM},
+        {nome:'Rep bajo lámina — Manga',     tipo:'fijo', cap:'1,98 lám/h',  ph:phRepBM, bottleneck:true},
+        {nome:'Rep sobre lámina — Gaylord',  tipo:'fijo', cap:'1,40 lám/h',  ph:phRepSG},
+        {nome:'Rep bajo lámina — Gaylord',   tipo:'fijo', cap:'1,13 lám/h',  ph:phRepBG, bottleneck:true},
+        {nome:'Rep Granel (bajo)',            tipo:'fijo', cap:'532 pcts/hh', ph:CAP_REP_GRAN_BAJO},
+        {nome:'Rep Granel (sobre)',           tipo:'fijo', cap:'429 pcts/hh', ph:CAP_REP_GRAN_SOBRE},
+        {nome:'Rep Escalera MLM (Gaylord)',   tipo:'fijo', cap:'1,09 lám/h',  ph:phRepEsc}
+      ]
+    }
+  ];
+
+  var html = '<table class="res-table animate"><thead><tr>';
+  html += '<th>Subproceso</th><th>Capacidad</th><th>pcts/h</th>';
+  html += '</tr></thead><tbody>';
+
+  grupos.forEach(function(g){
+    html += '<tr class="group-hdr"><td colspan="3">'+g.grp+'</td></tr>';
+    g.rows.forEach(function(r){
+      var tagHtml;
+      if(r.tipo==='var'){
+        tagHtml = '<span class="tag-fixed tag-var">VARIABLE</span>';
+      } else {
+        tagHtml = '<span class="tag-fixed">MTM FIJO</span>';
+      }
+      if(r.info)        tagHtml += '<span class="tag-info">INFO</span>';
+      if(r.bottleneck)  tagHtml += '<span class="tag-bottleneck">CUELLO</span>';
+
+      var phHtml;
+      if(r.info){
+        phHtml = '<span style="color:var(--gray);font-size:10px">— traslado</span>';
+      } else if(r.ph==null){
+        phHtml = '<span style="color:var(--gray)">— setup</span>';
+      } else {
+        phHtml = fmt(r.ph);
+      }
+
+      html += '<tr>';
+      html += '<td>'+r.nome+' '+tagHtml+'</td>';
+      html += '<td><span style="font-size:10px;color:var(--gray)">'+r.cap+'</span></td>';
+      html += '<td>'+phHtml+'</td>';
+      html += '</tr>';
+    });
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('tableContainer').innerHTML = html;
+}
+
+function toggleRef(){
+  var body  = document.getElementById('refBody');
+  var arrow = document.getElementById('refArrow');
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
+}
+
+window.addEventListener('load', calcular);
+</script>
+</body>
+</html>
